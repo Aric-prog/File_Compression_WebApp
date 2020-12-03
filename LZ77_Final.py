@@ -1,15 +1,4 @@
 from bitarray import bitarray
-
-import os
-import sys
-import binascii
-string = "mahi magi magi mahi mahi hello mahi madi mahi mahi mahi facebook hello world mahi magi magi mahi mahi hello mahi madi mahi mahi mahi facebook hello world mahi magi magi mahi mahi hello mahi madi mahi mahi mahi facebook hello world "
-newString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin risus sit amet tincidunt fermentum. Mauris fringilla arcu id nisi posuere, vitae imperdiet risus rhoncus. Curabitur varius nunc quis diam lobortis feugiat. Nam eros ex, pretium id suscipit vitae, scelerisque et tellus. Cras tincidunt accumsan ultricies. Aliquam feugiat diam massa, in posuere leo imperdiet fringilla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
-newnew = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-abra = "mahi magi magi mahi mahi hello "
-# Accepts string arguments for both search and look ahead.
-# Returns a tuple output containing (offset, match_length, character) 
-
 def LZ77(search,lookAhead):
     best_length = 0
     best_offset = 0
@@ -53,8 +42,6 @@ def LZ77(search,lookAhead):
 
     return best_offset,best_length, best_char
 
-
-# Run the LZ77 algorithm, accepts a string argument.
 def compress(string):
     pair = 0
     i = 0
@@ -85,64 +72,56 @@ def compress(string):
                 # offset and then length
                 output_buffer.append(True)
                 output_buffer.frombytes(offset_and_length.to_bytes(2,'big'))
-                
+                # print(string[i], output_buffer.to01())
+                # print(result[0],result[1])
+                # output_buffer.clear()
                 i += result[1]
             else:
                 # Write raw char because it saves more space.
                 output_buffer.append(False)
-                print("{0:b}".format(int(result[2] , 16)).zfill(4))
-                output_buffer.frombytes(bytes(result[2],'utf-8'))
+                output_buffer.frombytes(result[2].to_bytes(1,'big'))
+                # print(string[i], output_buffer.to01())
 
+                # output_buffer.clear()
                 i += 1
-            pair += 1
-        print(pair)
+                
         out.write(output_buffer.tobytes())
 
 def decompress():
     # print(pair)
+    output = bytearray("",encoding = 'utf-8')
     input_buffer = bitarray(endian = 'big')
     with open("output.bin",'rb') as r:
         input_buffer.fromfile(r)
     
-    output = ""
     length = len(input_buffer)
-    while(length >= 9):
-        # Case true :
-        if(input_buffer.pop(0)):
-            offset_and_length = int.from_bytes(input_buffer[:16].tobytes(),'big') 
-            offset = offset_and_length >> 4
 
-            match_length = offset_and_length - (offset << 4)
+    print("DECOMPRESS\n\n")
+    with open("lol.py",'wb') as out:
+        while(length >= 9):
+            # Case true :
+            if(input_buffer.pop(0)):
+                offset_and_length = int.from_bytes(input_buffer[:16].tobytes(),'big') 
+                offset = offset_and_length >> 4
+                match_length = offset_and_length - (offset << 4)
+                # print(offset,match_length)
+                start_pos = len(output) - offset
+                # test_int += match_length
+                # print(start_pos)
+                # print(output)
+                output += output[start_pos : start_pos + match_length]
+                del input_buffer[:16]
+                length -= 17
+            else:
+                element = input_buffer[:8].tobytes()
+                del input_buffer[:8]
+                length -= 9
+                output += element
+                # print(output)
+        out.write(output)
 
-            start_pos = len(output) - offset
-            
-            # print("(",offset,match_length,")")
-            # print(start_pos)
-            # print(output)
-            output += output[start_pos : start_pos + match_length]
-            del input_buffer[:16]
-            length -= 17
-        else:
-
-            element = chr(int.from_bytes(input_buffer[:8].tobytes(),'big'))
-            del input_buffer[:8]
-            length -= 9
-            output += element
-            
-    print(output == newString)
-
-
-
-# print(LZ77(newString[:1],newString[1:]))
-# print(newString[:1] , newString[1:])
-# print(len(newString[:0]))
-
-with open(os.path.join(sys.path[0],"kobe.py"),'rb') as f:
-    content = f.read()
-s = binascii.hexlify(content)
-
-hex = str(binascii.hexlify(content), 'ascii')
-formatted_hex = ''.join(hex[i:i+2] for i in range(0, len(hex), 2))
-# print(formatted_hex)
-compress(formatted_hex)
+with open("LZ.py", 'rb') as fh:
+    ba = bytearray(fh.read())
+# print(ba[-1])
+compress(ba)
 decompress()
