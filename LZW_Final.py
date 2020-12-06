@@ -2,7 +2,7 @@ from bitarray import bitarray
 import os
 import sys
 
-from io import StringIO
+from io import StringIO,BytesIO
 
 string = "mahi magi magi mahi mahi hello mahi madi mahi mahi mahi facebook hello world mahi magi magi mahi mahi hello mahi madi mahi mahi mahi facebook hello world mahi magi magi mahi mahi hello mahi madi mahi mahi mahi facebook hello world "
 uncompressed = "KDW UIAJDOIAWUOIDUHAWOIAUHWDOIAUHDOIAUHDOIAWUHDOIUH WOIUHD AWOUIHD  AOIWhu daw"
@@ -16,7 +16,7 @@ class LZW():
         firstChar = bytearray(inputString[0].to_bytes(1,'big'))
         result = []
 
-        # print("Before compression:", len(inputString))
+        # # print("Before compression:", len(inputString))
 
         for i in range(len(inputString)):
             if i != len(inputString) - 1:
@@ -31,7 +31,7 @@ class LZW():
                 firstChar = bytearray(nextChar)
             nextChar = bytes(0)
         result.append(dictionary[bytes(firstChar)])
-
+        # print(dictionary)
         return result
 
     def decompress(self,filename):
@@ -62,7 +62,8 @@ class LZW():
 
         # Build the dictionary.
         dict_size = 256
-        dictionary = {i: chr(i) for i in range(dict_size)}
+        dictionary = {i: i.to_bytes(1,byteorder='big') for i in range(dict_size)}
+        
         # print(dictionary)
 
         # StringIO is used when you have some API that only takes files, but you need to use a string.
@@ -70,8 +71,9 @@ class LZW():
         # when compared to expressions like mystr += "more stuff\n" within a loop
         # use StringIO, otherwise this becomes O(N^2)
         # due to string concatenation in a loop
-        result = StringIO()
-        firstChar = chr(compressed.pop(0))
+
+        result = BytesIO()
+        firstChar = (compressed.pop(0)).to_bytes(1,'big')
         result.write(firstChar)
         for decimalOfaChar in compressed:
             # if 65 in dictionary entry = dictionary[65] = A
@@ -79,9 +81,10 @@ class LZW():
             # result = "AA"  dictionary[256] = "AA" an so on
             if decimalOfaChar in dictionary:
                 stringEntry = dictionary[decimalOfaChar]
+                
             elif decimalOfaChar == dict_size:
                 # if we find a decimal baru yang barusan dimasukin ke dictionary cth during a loop we found D|D|D
-                stringEntry = firstChar + firstChar[0]
+                stringEntry = firstChar + firstChar[0].to_bytes(1,'big')
                 # printing to check how it works
                 # print(stringEntry)
             else:
@@ -91,12 +94,14 @@ class LZW():
             # print(result.getvalue())
 
             # add new char in the dictionary
-            dictionary[dict_size] = firstChar + stringEntry[0]
+            # print(firstChar , stringEntry[0])
+            dictionary[dict_size] = firstChar + stringEntry[0].to_bytes(1,'big')
             dict_size += 1
             firstChar = stringEntry
 
         # print(dictionary)
-        return result.getvalue()
+        with open('fuck.png','wb') as f:
+            f.write(result.getvalue())
 
     def run_compress(self,filename):
         output_buffer = bitarray(endian='big')
@@ -106,7 +111,7 @@ class LZW():
             input_ba = bytearray(f.read())
 
         result = self.LZWCompress(input_ba)
-        # print(result)
+        print(len(result))
 
         with open('LZW_Output.bin','wb')as w:
             for i in result:
@@ -120,8 +125,20 @@ class LZW():
 
     def run_decompress(self,filename):
         # Make the function list to str write to file
-        list_to_str(decompress(filename))
+        self.list_to_str(self.decompress(filename))
 
 
 compressor = LZW()
-print(compressor.run_compress('original.txt'))
+(compressor.run_compress('test_img.png'))
+# di kompres
+# print(compressor.run_decompress('LZW_Output.bin'))
+
+# compress > output > binary > dibaca > output > original
+
+
+
+# 255 normal
+# 0 1111 1111
+
+# Maybe - 255
+# 1 1111 1111 1111 1111
