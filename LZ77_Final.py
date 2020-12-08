@@ -127,4 +127,4 @@ class LZ77():
         self.decompress(self.run(filename))
     
 test = LZ77()
-test.run_compress('original.txt')
+test.run_compress('Okayu.png')

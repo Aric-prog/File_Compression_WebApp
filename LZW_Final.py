@@ -42,17 +42,19 @@ class LZW():
         output_list = []
         output = ba.to01()
         length = len(output)
-        i = 9
+        i = 0
 
         while(length - 9 > 0):
-            current_element = output[i - 9 : i]
             # print(current_element)
-            if(int(current_element[0])):
-                output_list.append(int(current_element[1:] , 2))
+            if(int(output[i])):
+                current_element = output[i : i + 9]
+                output_list.append(int(current_element[1:] , 1))
+                length -= 9
             else:
+                current_element = output[i : i + 25]
                 output_list.append(int(current_element[1:] , 2) + 255)
+                length -= 17
             i += 9
-            length -= 9
             # print(current_element)
             # print(length)
         # return list_to_str(output_list)
@@ -111,7 +113,7 @@ class LZW():
             input_ba = bytearray(f.read())
 
         result = self.LZWCompress(input_ba)
-        print(len(result))
+        # print(len(result))
 
         with open('LZW_Output.bin','wb')as w:
             for i in result:
@@ -119,8 +121,11 @@ class LZW():
                     output_buffer.append(True)
                     output_buffer.frombytes(i.to_bytes(1,'big'))
                 else:
-                    output_buffer.append(False)
-                    output_buffer.frombytes((i - 255).to_bytes(1,'big'))
+                    try:
+                        output_buffer.append(False)
+                        output_buffer.frombytes((i - 255).to_bytes(2,'big'))
+                    except:
+                        print(i)
             w.write(output_buffer.tobytes())
 
     def run_decompress(self,filename):
@@ -129,7 +134,7 @@ class LZW():
 
 
 compressor = LZW()
-(compressor.run_compress('test_img.png'))
+(compressor.run_compress('sample.bmp'))
 # di kompres
 # print(compressor.run_decompress('LZW_Output.bin'))
 
