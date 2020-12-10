@@ -32,10 +32,16 @@ document.querySelectorAll(".fileButton").forEach(inputElement => {
 });
 
 var uploadForm = document.getElementById("uploadFileForm");
-
+var uploadFiles = document.getElementById("file");
 uploadForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log("yay")
+    console.log("yay");
+    if(uploadFiles.files.length){
+        hideElement();
+    }
+    else{
+        console.log("No file uploaded to submit")
+    }
 });
 
 function updateThumbnail(dzElement, file){
@@ -70,10 +76,4 @@ function hideElement(){
     var after = document.getElementById("afterUpload");
     before.style.display = "none";
     after.style.display = "block";
-    // if(before.style.display === "none"){
-    //     before.style.display = "block";
-    // }
-    // else {
-    //     before.style.display = "none";
-    // }
 }
