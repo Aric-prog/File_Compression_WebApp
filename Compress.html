@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="AOAstyles.css">
+    <title>Compress</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <nav>
+            <ul>
+                <li><a href="../HTML Stuff/Compress.html" class="compress">Compress</a></li>
+                <li><a href="../HTML Stuff/Decompress2.html" class="decompress">Decompress</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <form action="" id="uploadFileForm">
+        <select name="" id="selectAlgo" class="selectAlgo">
+            <option value="0">Select Algorithm</option>
+            <option value="1">Lempel Ziv Welch</option>
+            <option value="2">Lempel Ziv 77</option>
+            <option value="3">To be Determined</option>
+        </select>
+        <br><br>
+        <div class="fileContainer">
+            <div class="files">
+                <span class="dragFile">Drag a file here</span>
+                <p class="pickFileText">or pick one</p>
+                <div class="divButton">
+                    <div class="uploadButton">
+                        <input type="file" id="file" class="fileButton" name="compressedFile">
+                        <label for="file">+</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <br>
+        <div class="beforeUpload" id="beforeUpload">
+            <div class="submitDiv">
+                <button class="submitButton" onclick="hideElement()" type="submit"
+                    form="uploadFileForm">Compress</button>
+            </div>
+        </div>
+        <div class="afterUpload" id="afterUpload">
+            <div class="downloadDiv">
+                <a class="downloadButton" href="path_to_file" download="proposed_file_name">Download Compressed File
+                    Here</a>
+            </div>
+            <div class="compressedDetails">
+                <p class="rawSize">Raw Size: 40kb</p>
+                <p class="csize">Compressed Size: 24kb</p>
+                <p class="rate">Rate of Compression: 40%</p>
+            </div>
+        </div>
+    </form>
+
+    <script src="./AOAJs.js"></script>
+
+</body>
+
+</html>
