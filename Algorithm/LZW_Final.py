@@ -34,11 +34,7 @@ class LZW():
         # print(dictionary)
         return result
 
-    def decompress(self,filename):
-        ba = bitarray(endian ='big')
-        with open(os.path.join(sys.path[0],filename), 'rb') as f:
-            ba.fromfile(f)
-
+    def decompress(self,ba,extension):
         output_list = []
         output = ba.to01()
         length = len(output)
@@ -48,7 +44,7 @@ class LZW():
             # print(current_element)
             if(int(output[i])):
                 current_element = output[i : i + 9]
-                output_list.append(int(current_element[1:] , 1))
+                output_list.append(int(current_element[1:] , 2))
                 length -= 9
             else:
                 current_element = output[i : i + 25]
@@ -58,9 +54,9 @@ class LZW():
             # print(current_element)
             # print(length)
         # return list_to_str(output_list)
-        return(output_list)
+        return output_list,extension
 
-    def list_to_str(self,compressed):
+    def list_to_str(self,compressed,extension):
 
         # Build the dictionary.
         dict_size = 256
@@ -102,20 +98,15 @@ class LZW():
             firstChar = stringEntry
 
         # print(dictionary)
-        with open('fuck.png','wb') as f:
+        # print("here?")
+        with open('LZW_Decompressed.' + extension,'wb') as f:
             f.write(result.getvalue())
 
-    def run_compress(self,filename):
-        output_buffer = bitarray(endian='big')
-        result = []
-
-        with open((os.path.join(sys.path[0],filename)),'rb') as f:
-            input_ba = bytearray(f.read())
-
+    def run_compress(self,input_ba,output_buffer):
         result = self.LZWCompress(input_ba)
         # print(len(result))
 
-        with open('LZW_Output.bin','wb')as w:
+        with open('LZW_Compressed.bin','wb')as w:
             for i in result:
                 if(i < 256):
                     output_buffer.append(True)
@@ -128,13 +119,13 @@ class LZW():
                         print(i)
             w.write(output_buffer.tobytes())
 
-    def run_decompress(self,filename):
+    def run_decompress(self,ba,extension):
         # Make the function list to str write to file
-        self.list_to_str(self.decompress(filename))
+        self.list_to_str(*self.decompress(ba,extension))
 
 
-compressor = LZW()
-(compressor.run_compress('sample.bmp'))
+# compressor = LZW()
+# (compressor.run_compress('sample.bmp'))
 # di kompres
 # print(compressor.run_decompress('LZW_Output.bin'))
 

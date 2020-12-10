@@ -44,16 +44,16 @@ class LZ77():
 
         return best_offset,best_length, best_char
 
-    def compress(self,string):
+    def compress(self,input_buffer,output_buffer):
         i = 0
         window_size = 4095
         look_size = 15
-        output_buffer = bitarray(endian='big')
-
-        with open("LZ77_Output.bin",'wb') as out:
-            while(i < len(string)):
-                search = string[:i]
-                lookAhead = string[i:]
+        
+        
+        with open("LZ77_Compressed.lz77",'wb') as out:
+            while(i < len(input_buffer)):
+                search = input_buffer[:i]
+                lookAhead = input_buffer[i:]
 
                 offset_and_length = 0
 
@@ -80,20 +80,16 @@ class LZ77():
 
                     i += 1
             out.write(output_buffer.tobytes())
+        return "LZ77_Compressed.lz77"
 
-    def decompress(self,filename):
+    def decompress(self, input_buffer,extension):
         # print(pair)
         # Todo change output to byte IO
         output = bytearray("",encoding = 'utf-8')
-        input_buffer = bitarray(endian = 'big')
-        extension = ""
-        with open((os.path.join(sys.path[0],filename)),'rb') as r:
-            input_buffer.fromfile(r)
-
         length = len(input_buffer)
 
-        print("DECOMPRESS\n\n")
-        with open("LZ77_Decompressed.txt" + extension,'wb') as out:
+        print("DECOMPRESS\n")
+        with open("LZ77_Decompressed." + extension,'wb') as out:
             while(length >= 9):
                 # Case true :
                 if(input_buffer.pop(0)):
@@ -112,18 +108,9 @@ class LZ77():
                     output += element
                     # print(output)
             out.write(output)
+        return "LZ77_Decompressed." + extension
 
-    # print(ba[-1])
-    def run(self,filename):
-        with open((os.path.join(sys.path[0],filename)), 'rb') as fh:
-            ba = bytearray(fh.read())
-        return ba
-    
-    def run_compress(self,filename):
-        self.compress(self.run(filename))  
-        
-    def run_decompress(self,filename):
-        self.decompress(self.run(filename))
-    
-test = LZ77()
-test.run_compress('inputs/asdf.bmp')
+# test = LZ77()
+# test.run_compress('test_inputs/Okayu.png')
+# test.run_decompress('LZ77_Compressed.bin')
+
