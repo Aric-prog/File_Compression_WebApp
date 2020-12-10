@@ -1,0 +1,21 @@
+1. Iterative matrix multiplication (Assuming n * n size of matrix)
+    Initialize matrix X and Y
+    Initialize matrix C, with size = matrix X
+    For i in range(n)
+        For j in range(p)
+            total_sum = 0
+            For k in range(m)
+                total_sum += X[i][k] * Y[k][j]
+        C[i][j] = total_sum
+    The big O notation for this algorithm is O(n^3).
+
+2. Divide and conquer algorithm (Assuming that the matrix dimension is in the power of 2)
+    Initialize matrix X and Y
+    Divide both matrix into 4 blocks
+    Recursively multiply X and Y
+
+    The big O notation for this algorithm is O(n^3)
+
+3. Using strassen's algorithm, the second algorithm is slightly faster than the first one. Although recursion isn't efficient
+on space.
+
