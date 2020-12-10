@@ -1,0 +1,266 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family:'Quicksand', sans-serif;
+    background-color: white;
+}
+nav{
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    padding-bottom: 25px;
+}
+
+nav ul{
+    list-style-type: none;
+    padding: 0px;
+    /* border-style: solid; */
+}
+
+nav a{
+    /* background-image: linear-gradient(to bottom, #E0E1DD 0%,#778DA9 100%); */
+    text-decoration: none;
+    border-top: 1px #1B263B solid;
+    border-bottom: 1px #1B263B solid;
+    color: #1B263B;
+    text-align: center;
+    display: block;
+    padding: 35px;
+    font-size: 36px;
+}
+
+nav a:hover{
+    text-decoration: underline;
+}
+.compress{
+    text-decoration: underline;
+}
+
+.fileContainer{
+    display: block;
+    padding: 25px;
+    border: 5px dashed #415A77;
+    border-radius: 10px;
+    margin: auto;
+    /* height: 240px; */
+    width: 35%;
+}
+
+.fileContainerThumb{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #E0E1DD;
+    background-size: cover;
+    position: relative;
+}
+
+.fileContainerThumb::after{
+    content: attr(data-label);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    color: white;
+    background: rgba(0, 0, 0, 0.75);
+    font-size: 16px;
+    text-align: center;
+}
+
+.files{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    position: relative;
+}
+.fileContainer--over{
+    border-style: solid;
+}
+.divButton{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+.uploadButton{
+    height: 75px;
+    width: 75px;
+    border-radius: 100px;
+    position:relative;
+    
+    display:flex;
+    justify-content:center;
+    align-items: center;  
+
+    border:4px solid transparent;
+    overflow:hidden;
+    background-color: #415A77;
+    background-size: 100% 200%;
+    transition: all 1s;
+    color: #FFFFFF;
+    font-size: 40px;
+}
+
+input[type='file']{
+
+    height:200px;
+    width:200px;
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0;
+    cursor:pointer;
+}
+.uploadButton:hover{
+    box-shadow: 0 12px 12px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.dragFile{
+    padding-top: 20px;
+    text-align: center;
+    font-size: 36px;
+    display: block;
+}
+.pickFileText{
+    text-align: center;
+    font-size: 24px;
+    margin: 1px auto 13px;
+}
+
+.selectAlgo{
+    display: flex;
+    min-width: 300px;
+    justify-content: center;
+	font-size: 16px;
+	font-family: sans-serif;
+	font-weight: 700;
+	color: #f0f0f0;
+	line-height: 1.3;
+	padding: .6em 1.4em .5em .8em;
+	width: 25%;
+	max-width: 100%;
+	box-sizing: border-box;
+	margin: auto;
+	border: 1px solid #aaa;
+	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+	border-radius: .5em;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-image: url('https://www.christinecarter.com/wp-content/uploads/sites/6/2019/06/white-down-arrow-png-2.png'),
+	  linear-gradient(to bottom, #415A77 0%,#1B263B 100%);
+	background-repeat: no-repeat, repeat;
+	background-position: right .7em top 50%, 0 0;
+	background-size: .65em auto, 100%;
+}
+.selectAlgo::-ms-expand{
+    display: none;
+}
+.selectAlgo:hover{
+    border-color: #888;
+}
+.selectAlgo:focus{
+    border-color: #aaa;
+	box-shadow: 0 0 1px 2px #778DA9;
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #f0f0f0;
+	outline: none;
+}
+.selectAlgo option{
+    font-weight:normal;
+    color: #f0f0f0;
+    background-color: #415A77;
+}
+
+.submitDiv{
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+}
+
+.submitButton{
+    display: block;
+    background-image: linear-gradient(to bottom, #415A77 0%,#1B263B 100%);
+    color: #f0f0f0;
+    padding: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    width: 320px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.submitButton:hover{
+    background-image: linear-gradient(to bottom, #778DA9 0%,#415A77 100%);
+}
+
+.afterUpload{
+    display: none;
+}
+
+.downloadDiv{
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+}
+.downloadButton{
+    display: block;
+    background-image: linear-gradient(to bottom, #415A77 0%,#1B263B 100%);
+    color: #f0f0f0;
+    padding: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    width: 320px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 20px;
+}
+.downloadButton:hover{
+    background-image: linear-gradient(to bottom, #778DA9 0%,#415A77 100%);
+}
+
+.compressedDetails p{
+    width: 100%;
+    text-align: center;
+
+}
+.rawSize{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.csize{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.rate{
+    margin-top: 10px;
+}
+
+
+@media screen and (min-width: 770px){
+
+
+    nav ul{
+        display: flex;
+        justify-content: center;
+    }
+    nav li{
+        flex: 1 1 0;
+    }
+
+    .fileContainer{
+        display: block;
+        padding: 25px;
+        border: 5px dashed #415A77;
+        border-radius: 10px;
+        margin: auto;
+        height: 220px;
+        width: 35%;
+    }
+    .fileContainer--over{
+        border-style: solid;
+    }
+}

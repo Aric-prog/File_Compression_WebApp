@@ -32,7 +32,6 @@ class LZ77():
                     candidate_char = full[lookAheadIndex + (candidate_length - 1)]
                     break
                 
-                
             # Finds the longest match length and lowest offset.
             if(best_length < candidate_length and candidate_length > 1):
                 best_length = candidate_length
@@ -127,4 +126,4 @@ class LZ77():
         self.decompress(self.run(filename))
     
 test = LZ77()
-test.run_compress('Okayu.png')
+test.run_compress('inputs/asdf.bmp')
