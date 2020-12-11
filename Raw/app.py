@@ -1,9 +1,12 @@
 from flask import Flask, request, redirect, send_file, render_template, url_for
+from Algorithm import Compress_Wrapper as comp
 from werkzeug.utils import secure_filename
 from os.path import join
 from LZ77_Final import LZ77
 
 UPLOAD_FOLDER = "uploads/"
+OUTPUT_FOLDER = "Algorithm/"
+SUPPORTED_EXTENSIONS = {'lz77','lzw'}
 LZ77 = LZ77()
 
 app = Flask(__name__)
@@ -20,12 +23,23 @@ def compress_upload(done = False):
             print("No filename")
             return redirect(request.url)
         else:
+            output_name = ""
             filename = secure_filename(file.filename)
             file.save(join(app.config["UPLOAD_FOLDER"], filename))
+            
             print("Saved file successfully")
             print("Processing")
+            
+            algorithm = request.form.get("algorithms")
+            # TODO : Get compress_wrapper to raw and implement algorithm selects
+            if(algorithm == "lz77"):
+                output_name = comp.LZ77_compress(UPLOAD_FOLDER + filename)
+            elif(algorithm == "lzw"):
+                output_name = comp.LZW_compress(UPLOAD_FOLDER + filename)
+            else:
+                print("Algo not found")
             # Check algorithm here  
-            output_name = LZ77.run_compress(UPLOAD_FOLDER + filename)
+            # output_name = LZ77.run_compress(UPLOAD_FOLDER + filename)
             # Block here
             return render_template("compress.html", done = True, output_name=output_name)
     return render_template("compress.html", done=done)
@@ -41,11 +55,24 @@ def decompress_upload():
             print("No filename")
             return redirect(request.url)
         else:
+            output_name = ""
             filename = secure_filename(file.filename)
+            extension = filename.split('.')[1]
+            alert_message = ""
+
             file.save(join(app.config["UPLOAD_FOLDER"], filename))
 
+            # TODO : check extension and do appropriate function
+            if extension in SUPPORTED_EXTENSIONS:
+                if(extension == "lz77"):
+                    output_name = comp.LZ77_decompress(UPLOAD_FOLDER + filename)
+                elif(extension == "lzw"):
+                    output_name = comp.LZW_decompress(UPLOAD_FOLDER + filename)
+            else:
+                pass
+
             print("Saved file successfully")
-            return render_template("decompress.html", done = True)
+            return render_template("decompress.html", done = True, output_name = output_name)
     return render_template("decompress.html",done = False)
 
 @app.route("/return-files/<filename>")
