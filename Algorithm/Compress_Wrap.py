@@ -11,7 +11,7 @@ def read4(filename):
         input_buffer.fromfile(r)
     extension = (input_buffer[:32].tobytes().decode('utf-8'))
     del input_buffer[:32]
-    print(extension)
+    # print(extension)
     return input_buffer,extension
 
 def write4(filename):
@@ -21,11 +21,14 @@ def write4(filename):
 
     with open((os.path.join(sys.path[0],filename)), 'rb') as fh:
         input_buffer = bytearray(fh.read())
-    
+    # print(input_buffer)
     return input_buffer, output_buffer
 
 def get_extension(filename):
-    return filename.split('.')[1] + (" " * (4 - len(filename.split('.')[1])))
+    if(len(filename.split('.')[1]) <= 4):
+        return filename.split('.')[1] + (" " * (4 - len(filename.split('.')[1])))
+    else:
+        return "    "
 
 def LZ77_compress(filename):
     compressor = LZ77()
@@ -37,13 +40,14 @@ def LZ77_decompress(filename):
     
 def LZW_compress(filename):
     compressor = LZW()
-    compressor.run_compress(*write4(filename))
+    # print(write4(filename))
+    compressor.run_compress(*(write4(filename)))
 
 def LZW_decompress(filename):
     decompressor = LZW()
-    decompressor.run_decompress(*read4(filename))
+    decompressor.decompress(*read4(filename))
     
-# LZW_compress('test_inputs/ceseve.csv')
-LZW_decompress('LZW_Compressed.bin')
+# LZW_compress('test_inputs/Okayu.png')
+LZW_decompress('LZW_Compressed.lzw')
 # LZ77_decompress('LZ77_Compressed.lz77')
 # read4('LZ77_Compressed.bin')

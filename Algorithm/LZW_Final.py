@@ -34,11 +34,8 @@ class LZW():
         # print(dictionary)
         return result
 
-    def decompress(self,filename):
-        ba = bitarray(endian ='big')
-        with open(os.path.join(sys.path[0],filename), 'rb') as f:
-            ba.fromfile(f)
-
+    def decompress(self, input_buffer, extension):
+        ba = input_buffer
         output_list = []
         output = ba.to01()
         length = len(output)
@@ -50,17 +47,19 @@ class LZW():
                 current_element = output[i : i + 9]
                 output_list.append(int(current_element[1:] , 2))
                 length -= 9
+                i += 9
             else:
-                current_element = output[i : i + 25]
+                current_element = output[i : i + 17]
                 output_list.append(int(current_element[1:] , 2) + 255)
                 length -= 17
-            i += 9
+                i += 17
+            
             # print(current_element)
             # print(length)
         # return list_to_str(output_list)
-        return self.list_to_str(output_list)
+        return self.list_to_str(output_list,extension)
 
-    def list_to_str(self,compressed):
+    def list_to_str(self,compressed,extension):
 
         # Build the dictionary.
         dict_size = 256
@@ -102,20 +101,15 @@ class LZW():
             firstChar = stringEntry
 
         # print(dictionary)
-        with open('fuck.png','wb') as f:
+        with open('LZW_Decompressed.'+extension,'wb') as f:
             f.write(result.getvalue())
 
-    def run_compress(self,filename):
-        output_buffer = bitarray(endian='big')
+    def run_compress(self,input_ba,output_buffer):
         result = []
-
-        with open((os.path.join(sys.path[0],filename)),'rb') as f:
-            input_ba = bytearray(f.read())
-
         result = self.LZWCompress(input_ba)
         # print(len(result))
 
-        with open('LZW_Output.bin','wb')as w:
+        with open('LZW_Compressed.lzw','wb')as w:
             for i in result:
                 if(i < 256):
                     output_buffer.append(True)
@@ -129,9 +123,9 @@ class LZW():
             w.write(output_buffer.tobytes())
 
 
-compressor = LZW()
+# compressor = LZW()
 # compressor.run_compress('test_inputs/Okayu.png')
-compressor.decompress('correct.bin')
+# compressor.decompress('LZW_Output.bin')
 # di kompres
 # print(compressor.run_decompress('LZW_Output.bin'))
 
