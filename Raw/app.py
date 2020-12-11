@@ -2,12 +2,10 @@ from flask import Flask, request, redirect, send_file, render_template, url_for
 from Algorithm import Compress_Wrapper as comp
 from werkzeug.utils import secure_filename
 from os.path import join
-from LZ77_Final import LZ77
 
 UPLOAD_FOLDER = "uploads/"
 OUTPUT_FOLDER = "Algorithm/"
 SUPPORTED_EXTENSIONS = {'lz77','lzw'}
-LZ77 = LZ77()
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -43,8 +41,8 @@ def compress_upload(done = False):
             # output_name = LZ77.run_compress(UPLOAD_FOLDER + filename)
             # Block here
             print(output_name)
-            return render_template("compress.html", done = True, output_name=output_name)
-    return render_template("compress.html", done=done)
+            return render_template("compress.html", output_name=output_name)
+    return render_template("compress.html")
 
 @app.route("/decompress", methods=["GET", "POST"])
 def decompress_upload():
@@ -74,8 +72,8 @@ def decompress_upload():
                 pass
 
             print("Saved file successfully")
-            return render_template("decompress.html", done = True, output_name = output_name)
-    return render_template("decompress.html",done = False)
+            return render_template("decompress.html" , output_name = output_name)
+    return render_template("decompress.html")
 
 @app.route("/return-files/<filename>")
 def return_files(filename):

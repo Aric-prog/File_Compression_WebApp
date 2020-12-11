@@ -88,6 +88,7 @@ class LZW():
                 # print(stringEntry)
             else:
                 raise ValueError('Bad compressed k: %s' % decimalOfaChar)
+                return ""
             result.write(stringEntry)
             # printing to keep track of the algo
             # print(result.getvalue())
@@ -119,7 +120,7 @@ class LZW():
                         output_buffer.append(False)
                         output_buffer.frombytes((i - 255).to_bytes(2,'big'))
                     except:
-                        print(i)
+                        return ""
             w.write(output_buffer.tobytes())
         
         return 'LZW_Compressed.lzw'

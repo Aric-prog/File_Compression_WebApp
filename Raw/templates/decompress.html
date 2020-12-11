@@ -7,7 +7,7 @@
                 <p><input type=file name=file>
                    <input type=submit value=Upload>
             </form>
-            {% if done == True %}
+            {% if output_name %}
             <a href="/return-files/{{ output_name }}">
                 <button>Download</button>
             </a>
