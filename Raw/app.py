@@ -30,17 +30,19 @@ def compress_upload(done = False):
             print("Saved file successfully")
             print("Processing")
             
-            algorithm = request.form.get("algorithms")
+            algorithm = str(request.form.get("algorithms"))
+            print(algorithm)
             # TODO : Get compress_wrapper to raw and implement algorithm selects
-            if(algorithm == "lz77"):
+            if(algorithm == "LZ77"):
                 output_name = comp.LZ77_compress(UPLOAD_FOLDER + filename)
-            elif(algorithm == "lzw"):
+            elif(algorithm == "LZW"):
                 output_name = comp.LZW_compress(UPLOAD_FOLDER + filename)
             else:
                 print("Algo not found")
             # Check algorithm here  
             # output_name = LZ77.run_compress(UPLOAD_FOLDER + filename)
             # Block here
+            print(output_name)
             return render_template("compress.html", done = True, output_name=output_name)
     return render_template("compress.html", done=done)
 
