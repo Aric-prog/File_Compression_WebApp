@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/AOAstyles.css">
     <link rel="stylesheet" href="../static/AOAstylesD2.css">
     <title>Decompress</title>
 </head>
@@ -11,30 +12,42 @@
 <body>
     <nav>
         <ul>
-            <li><a class="compress" href="../templates/Compress.html">Compress</a></li>
-            <li><a class="decompress" href="">Decompress</a></li>
+            <li><a href="/compress" >Compress</a></li>
+            <li><a href="/decompress">Decompress</a></li>
         </ul>
     </nav>
 
     <main>
-        <form action="">
+        <form action="/decompress" id="uploadFileForm" method="POST" enctype=multipart/form-data>
             <div>
                 <div class="files">
                     <span class="dragFile">Drag a compressed file here</span>
                     <p class="pickFileText">or pick one</p>
                     <div class="divButton">
                         <div class="uploadButton">
-                            <input type="file" id="file" class="fileButton">
+                            <input type=file name=file id="file" class="fileButton">
                             <label for="file">+</label>
                         </div>
                     </div>
                 </div>
                 <p class="rawSize">Raw Size: 40kb</p>
             </div>
+            <div class="beforeUpload" id="beforeUpload">
+                <div class="submitDiv">
+                    <input class="submitButton" type=submit value="Upload" form="uploadFileForm">
+                </div>
+            </div>
+            {% if output_name %}
             <div class="downloadDiv">
-                <a class="downloadButton" href="path_to_file" download="proposed_file_name">Download Decompressed File
+                <a class="downloadButton" href="/return-files/{{ output_name }}">Download Decompressed File
                     Here</a>
             </div>
+            <div class="compressedDetails">
+                <p class="rawSize">Raw Size: 40kb</p>
+                <p class="csize">Compressed Size: 24kb</p>
+                <p class="rate">Rate of Compression: 40%</p>
+            </div>
+            {% endif %}
         </form>
     </main>
 </body>

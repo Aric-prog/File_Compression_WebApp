@@ -11,17 +11,15 @@
     <div class="wrapper">
         <nav>
             <ul>
-                <li><a href="../templates/Compress.html" class="compress">Compress</a></li>
-                <li><a href="../templates/Decompress2.html" class="decompress">Decompress</a></li>
+                <li><a href="/compress" class="compress">Compress</a></li>
+                <li><a href="/decompress" class="decompress">Decompress</a></li>
             </ul>
         </nav>
     </div>
-    <form action="" id="uploadFileForm">
-        <select name="" id="selectAlgo" class="selectAlgo">
-            <option value="0">Select Algorithm</option>
-            <option value="1">Lempel Ziv Welch</option>
-            <option value="2">Lempel Ziv 77</option>
-            <option value="3">To be Determined</option>
+    <form action="/compress" id="uploadFileForm" method="POST" enctype=multipart/form-data>
+        <select name="algorithms" id="selectAlgo" class="selectAlgo">
+            <option value="LZ77" selected>Lempel Ziv 77</option>
+            <option value="LZW">Lempel Ziv Welch</option>
         </select>
         <br><br>
         <div class="fileContainer">
@@ -30,7 +28,7 @@
                 <p class="pickFileText">or pick one</p>
                 <div class="divButton">
                     <div class="uploadButton">
-                        <input type="file" id="file" class="fileButton" name="compressedFile">
+                        <input type=file name=file id="file" class="fileButton">
                         <label for="file">+</label>
                     </div>
                 </div>
@@ -41,20 +39,24 @@
         <br>
         <div class="beforeUpload" id="beforeUpload">
             <div class="submitDiv">
-                <button class="submitButton" type="submit" form="uploadFileForm">Compress</button>
+                <input class="submitButton" type=submit value="Upload" form="uploadFileForm">
             </div>
         </div>
+        <!-- If success, output this -->
+        {% if output_name %}
         <div class="afterUpload" id="afterUpload">
             <div class="downloadDiv">
-                <a class="downloadButton" href="path_to_file" download="proposed_file_name">Download Compressed File
+                <a class="downloadButton" href="/return-files/{{ output_name }}">Download Compressed File
                     Here</a>
             </div>
+            
             <div class="compressedDetails">
                 <p class="rawSize">Raw Size: 40kb</p>
                 <p class="csize">Compressed Size: 24kb</p>
                 <p class="rate">Rate of Compression: 40%</p>
             </div>
         </div>
+        {% endif %}
     </form>
 
     <script src="../static/AOAJs.js"></script>

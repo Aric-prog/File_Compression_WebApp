@@ -11,12 +11,13 @@ app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 @app.route("/compress", methods=["GET", "POST"])
-def compress_upload(done = False):
+def compress_upload():
     if request.method == "POST":
+        print("here?")
+        file = request.files["file"]
         if "file" not in request.files:
             print("No file")
             return redirect(request.url)
-        file = request.files["file"]
         if file.filename == '':
             print("No filename")
             return redirect(request.url)
@@ -41,7 +42,7 @@ def compress_upload(done = False):
             # output_name = LZ77.run_compress(UPLOAD_FOLDER + filename)
             # Block here
             print(output_name)
-            return render_template("compress.html", output_name=output_name, done="done")
+            return render_template("compress.html", output_name=output_name)
     return render_template("compress.html")
 
 @app.route("/decompress", methods=["GET", "POST"])
@@ -72,8 +73,8 @@ def decompress_upload():
                 pass
 
             print("Saved file successfully")
-            return render_template("decompress.html" , output_name = output_name)
-    return render_template("decompress.html")
+            return render_template("Decompress2.html" , output_name = output_name)
+    return render_template("Decompress2.html")
 
 @app.route("/return-files/<filename>")
 def return_files(filename):

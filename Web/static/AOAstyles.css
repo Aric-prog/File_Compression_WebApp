@@ -197,10 +197,6 @@ input[type='file']{
     background-image: linear-gradient(to bottom, #778DA9 0%,#415A77 100%);
 }
 
-.afterUpload{
-    display: none;
-}
-
 .downloadDiv{
     display: flex;
     justify-content: center;
