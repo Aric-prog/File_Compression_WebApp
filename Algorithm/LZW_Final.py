@@ -61,7 +61,7 @@ class LZW():
 
     def list_to_str(self,compressed,extension):
 
-        # Build the dictionary.
+        # Build the dictionary. 
         dict_size = 256
         dictionary = {i: i.to_bytes(1,byteorder='big') for i in range(dict_size)}
         

@@ -41,7 +41,7 @@ def compress_upload(done = False):
             # output_name = LZ77.run_compress(UPLOAD_FOLDER + filename)
             # Block here
             print(output_name)
-            return render_template("compress.html", output_name=output_name)
+            return render_template("compress.html", output_name=output_name, done="done")
     return render_template("compress.html")
 
 @app.route("/decompress", methods=["GET", "POST"])
