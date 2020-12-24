@@ -10,6 +10,7 @@ SUPPORTED_EXTENSIONS = {'lz77','lzw'}
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+@app.route("/")
 @app.route("/compress", methods=["GET", "POST"])
 def compress_upload():
     if request.method == "POST":
