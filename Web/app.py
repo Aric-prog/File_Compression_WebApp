@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, send_file, render_template, url_for
 from Algorithm import Compress_Wrapper as comp
 from werkzeug.utils import secure_filename
+from pathlib import Path
 from os.path import join
 
 UPLOAD_FOLDER = "uploads/"
@@ -14,7 +15,6 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 @app.route("/compress", methods=["GET", "POST"])
 def compress_upload():
     if request.method == "POST":
-        print("here?")
         file = request.files["file"]
         if "file" not in request.files:
             print("No file")
@@ -26,7 +26,7 @@ def compress_upload():
             output_name = ""
             filename = secure_filename(file.filename)
             file.save(join(app.config["UPLOAD_FOLDER"], filename))
-            
+            old_file_size = Path(join(app.config["UPLOAD_FOLDER"], filename)).stat().st_size
             print("Saved file successfully")
             print("Processing")
             
@@ -38,12 +38,14 @@ def compress_upload():
             elif(algorithm == "LZW"):
                 output_name = comp.LZW_compress(UPLOAD_FOLDER + filename)
             else:
-                print("Algo not found")
+                print("Algorithm not found")
             # Check algorithm here  
             # output_name = LZ77.run_compress(UPLOAD_FOLDER + filename)
             # Block here
             print(output_name)
-            return render_template("compress.html", output_name=output_name)
+            new_file_size = Path(output_name).stat().st_size
+            compression_rate = 100 - round(((new_file_size / old_file_size) * 100), 2)
+            return render_template("compress.html", output_name=output_name, old_file_size = old_file_size, new_file_size = new_file_size, compression_rate = compression_rate)
     return render_template("compress.html")
 
 @app.route("/decompress", methods=["GET", "POST"])
@@ -63,6 +65,7 @@ def decompress_upload():
             alert_message = ""
 
             file.save(join(app.config["UPLOAD_FOLDER"], filename))
+            old_file_size = Path(join(app.config["UPLOAD_FOLDER"], filename)).stat().st_size
 
             # TODO : check extension and do appropriate function
             if extension in SUPPORTED_EXTENSIONS:
@@ -72,9 +75,12 @@ def decompress_upload():
                     output_name = comp.LZW_decompress(UPLOAD_FOLDER + filename)
             else:
                 pass
-
+            
+            new_file_size = Path(output_name).stat().st_size
+            decompression_rate = 100 - round(((old_file_size / new_file_size) * 100), 2)
+    
             print("Saved file successfully")
-            return render_template("Decompress2.html" , output_name = output_name)
+            return render_template("Decompress2.html" , output_name = output_name, new_file_size = new_file_size, old_file_size = old_file_size, decompression_rate = decompression_rate)
     return render_template("Decompress2.html")
 
 @app.route("/return-files/<filename>")

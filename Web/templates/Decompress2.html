@@ -30,7 +30,6 @@
                         </div>
                     </div>
                 </div>
-                <p class="rawSize">Raw Size: 40kb</p>
             </div>
             <div class="beforeUpload" id="beforeUpload">
                 <div class="submitDiv">
@@ -43,9 +42,9 @@
                     Here</a>
             </div>
             <div class="compressedDetails">
-                <p class="rawSize">Raw Size: 40kb</p>
-                <p class="csize">Compressed Size: 24kb</p>
-                <p class="rate">Rate of Compression: 40%</p>
+                <p class="rawSize">Raw Size: {{ old_file_size }}bytes</p>
+                <p class="csize">Compressed Size: {{ new_file_size }} bytes</p>
+                <p class="rate">Rate of decompression: {{ decompression_rate }}%</p>
             </div>
             {% endif %}
         </form>
