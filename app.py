@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, send_file, render_template, url_for
-from Algorithm import Compress_Wrapper as comp
+from algorithm import Compress_Wrapper as comp
 from werkzeug.utils import secure_filename
 from pathlib import Path
 from os.path import join

@@ -138,6 +138,5 @@ dmypy.json
 cython_debug/
 
 # Input and output files
-
 uploads/
 output/
