@@ -5,11 +5,12 @@ from pathlib import Path
 from os.path import join
 
 UPLOAD_FOLDER = "uploads/"
-OUTPUT_FOLDER = "Algorithm/"
+OUTPUT_FOLDER = "output/"
 SUPPORTED_EXTENSIONS = {'lz77','lzw'}
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["OUTPUT_FOLDER"] = OUTPUT_FOLDER
 
 @app.route("/")
 @app.route("/compress", methods=["GET", "POST"])
@@ -43,7 +44,7 @@ def compress_upload():
             # output_name = LZ77.run_compress(UPLOAD_FOLDER + filename)
             # Block here
             print(output_name)
-            new_file_size = Path(output_name).stat().st_size
+            new_file_size = Path(join(app.config["OUTPUT_FOLDER"], output_name)).stat().st_size
             compression_rate = 100 - round(((new_file_size / old_file_size) * 100), 2)
             return render_template("compress.html", output_name=output_name, old_file_size = old_file_size, new_file_size = new_file_size, compression_rate = compression_rate)
     return render_template("compress.html")
@@ -66,7 +67,7 @@ def decompress_upload():
 
             file.save(join(app.config["UPLOAD_FOLDER"], filename))
             old_file_size = Path(join(app.config["UPLOAD_FOLDER"], filename)).stat().st_size
-
+    
             # TODO : check extension and do appropriate function
             if extension in SUPPORTED_EXTENSIONS:
                 if(extension == "lz77"):
@@ -75,8 +76,8 @@ def decompress_upload():
                     output_name = comp.LZW_decompress(UPLOAD_FOLDER + filename)
             else:
                 pass
-            
-            new_file_size = Path(output_name).stat().st_size
+            output_name = output_name
+            new_file_size = Path(join(app.config["OUTPUT_FOLDER"], output_name)).stat().st_size
             decompression_rate = 100 - round(((old_file_size / new_file_size) * 100), 2)
     
             print("Saved file successfully")
@@ -85,7 +86,7 @@ def decompress_upload():
 
 @app.route("/return-files/<filename>")
 def return_files(filename):
-    file_path = filename
+    file_path = Path(join(app.config["OUTPUT_FOLDER"], filename))
     return send_file(file_path, as_attachment = True, attachment_filename='')
 
 if __name__ == "__main__":

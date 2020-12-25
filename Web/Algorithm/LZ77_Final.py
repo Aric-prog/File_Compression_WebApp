@@ -50,7 +50,7 @@ class LZ77():
         look_size = 15
         
         
-        with open("LZ77_Compressed.lz77",'wb') as out:
+        with open((os.path.join("output/", "LZ77_Compressed.lz77")),'wb') as out:
             while(i < len(input_buffer)):
                 search = input_buffer[:i]
                 lookAhead = input_buffer[i:]
@@ -89,7 +89,7 @@ class LZ77():
         length = len(input_buffer)
 
         print("DECOMPRESS\n")
-        with open("LZ77_Decompressed." + extension,'wb') as out:
+        with open((os.path.join("output/", ("LZ77_Decompressed." + extension))),'wb') as out:
             while(length >= 9):
                 # Case true :
                 if(input_buffer.pop(0)):
