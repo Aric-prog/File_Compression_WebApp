@@ -1,6 +1,6 @@
 from bitarray import bitarray
-from LZW_Final import LZW
-from LZ77_Final import LZ77
+from algorithm.LZW_Final import LZW
+from algorithm.LZSS_Final import LZ77
 
 import cProfile
 import os 
