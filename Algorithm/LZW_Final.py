@@ -9,6 +9,9 @@ uncompressed = "KDW UIAJDOIAWUOIDUHAWOIAUHWDOIAUHDOIAUHDOIAWUHDOIUH WOIUHD AWOUI
 
 class LZW():
     def LZWCompress(self,inputString):
+
+        # make dictionary of key = actual things, value = decimals representing those things
+        # using dictSize as a pointer pointing to the last index of the dictionary
         dictSize = 256
         dictionary = {i.to_bytes(1,byteorder='big'): i for i in range(dictSize)}
         # print(dictionary)
@@ -19,13 +22,24 @@ class LZW():
         # # print("Before compression:", len(inputString))
 
         for i in range(len(inputString)):
+
+            # if it hasnt reached the last string yet, we keep assigning the nextcharacter
+            # which we are currently looping inside a variable
             if i != len(inputString) - 1:
                 nextChar = (inputString[i + 1].to_bytes(1,'big'))
+
+            # if combined characters is already inserted into the dictionary,
+            # we just assign them to the first character pointer/variable
             if bytes(firstChar + nextChar) in dictionary:
                 firstChar += nextChar
             else:
                 # print(firstChar, dictionary[firstChar], firstChar + nextChar, dictSize)
+                # inserting the key of the dictionary of a selected index to the result list
                 result.append(dictionary[bytes(firstChar)])
+
+                # we assign a new key of a new combined character that is not in the dictionary yet
+                # with the pointer pointing to the last index + 1 and also adding more size by 1 each loop
+                # we reassign the firstChar pointer to nextChar for next iteration and reset the nextChar
                 dictionary[bytes(firstChar + nextChar)] = dictSize
                 dictSize += 1
                 firstChar = bytearray(nextChar)
@@ -61,8 +75,8 @@ class LZW():
 
     def list_to_str(self,compressed,extension):
         # Build the dictionary.
-        dict_size = 256
-        dictionary = {i: i.to_bytes(1,byteorder='big') for i in range(dict_size)}
+        dictSize = 256
+        dictionary = {i: i.to_bytes(1,byteorder='big') for i in range(dictSize)}
         
         # print(dictionary)
 
@@ -81,7 +95,7 @@ class LZW():
             # result = "AA"  dictionary[256] = "AA" an so on
             if decimalOfaChar in dictionary:
                 stringEntry = dictionary[decimalOfaChar]
-            elif decimalOfaChar == dict_size:
+            elif decimalOfaChar == dictSize:
                 # if we find a decimal baru yang barusan dimasukin ke dictionary cth during a loop we found D|D|D
                 stringEntry = firstChar + firstChar[0].to_bytes(1,'big')
                 # printing to check how it works
@@ -95,8 +109,8 @@ class LZW():
 
             # add new char in the dictionary
             # print(firstChar , stringEntry[0])
-            dictionary[dict_size] = firstChar + stringEntry[0].to_bytes(1,'big')
-            dict_size += 1
+            dictionary[dictSize] = firstChar + stringEntry[0].to_bytes(1,'big')
+            dictSize += 1
             firstChar = stringEntry
 
         # print(dictionary)
