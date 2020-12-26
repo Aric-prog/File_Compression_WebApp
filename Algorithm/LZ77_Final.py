@@ -12,7 +12,8 @@ class LZ77():
 
         # Points to the start of the look ahead buffer.
         lookAheadIndex = len(search)
-        for i in range(len(search)):
+        fullLength = len(full)
+        for i in range(lookAheadIndex):
             candidate_length = 0
             candidate_char = ""
 
@@ -23,7 +24,7 @@ class LZ77():
                 candidate_length += 1
 
                 # Stores char to be outputted.
-                if(lookAheadIndex + candidate_length == len(full)):
+                if(lookAheadIndex + candidate_length == fullLength):
                     candidate_length -= 1
                     candidate_char = lookAhead[-1]
                     break
@@ -41,8 +42,8 @@ class LZ77():
                 new_offset = lookAheadIndex - i
                 if(new_offset < best_offset):
                     best_offset = new_offset
-
         return best_offset,best_length, best_char
+
 
     def compress(self,input_buffer,output_buffer):
         i = 0
@@ -109,8 +110,3 @@ class LZ77():
                     # print(output)
             out.write(output)
         return "LZ77_Decompressed." + extension
-
-# test = LZ77()
-# test.run_compress('test_inputs/Okayu.png')
-# test.run_decompress('LZ77_Compressed.bin')
-

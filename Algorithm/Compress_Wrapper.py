@@ -1,7 +1,8 @@
 from bitarray import bitarray
-from Algorithm.LZW_Final import LZW
-from Algorithm.LZ77_Final import LZ77
+from LZW_Final import LZW
+from LZ77_Final import LZ77
 
+import cProfile
 import os 
 import sys
 
@@ -47,7 +48,4 @@ def LZW_decompress(filename):
     decompressor = LZW()
     return decompressor.decompress(*read4(filename))
     
-# LZW_compress('test_inputs/Okayu.png')
-# LZW_decompress('LZW_Compressed.lzw')
-# LZ77_decompress('LZ77_Compressed.lz77')
-# read4('LZ77_Compressed.bin')
+# cProfile.run("LZ77_compress('asdf.html')")
