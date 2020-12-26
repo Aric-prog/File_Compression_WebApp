@@ -48,4 +48,5 @@ def LZW_decompress(filename):
     decompressor = LZW()
     return decompressor.decompress(*read4(filename))
     
-# cProfile.run("LZ77_compress('asdf.html')")
+# cProfile.run("LZW_compress('test.jpg')")
+# cProfile.run("LZW_decompress('LZW_Compressed.lzw')")
