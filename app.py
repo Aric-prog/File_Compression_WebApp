@@ -34,8 +34,8 @@ def compress_upload():
             algorithm = str(request.form.get("algorithms"))
             print(algorithm)
             # TODO : Get compress_wrapper to raw and implement algorithm selects
-            if(algorithm == "LZ77"):
-                output_name = comp.LZ77_compress(UPLOAD_FOLDER + filename)
+            if(algorithm == "LZSS"):
+                output_name = comp.LZSS_compress(UPLOAD_FOLDER + filename)
             elif(algorithm == "LZW"):
                 output_name = comp.LZW_compress(UPLOAD_FOLDER + filename)
             else:
@@ -71,7 +71,7 @@ def decompress_upload():
             # TODO : check extension and do appropriate function
             if extension in SUPPORTED_EXTENSIONS:
                 if(extension == "lzss"):
-                    output_name = comp.LZ77_decompress(UPLOAD_FOLDER + filename)
+                    output_name = comp.LZSS_decompress(UPLOAD_FOLDER + filename)
                 elif(extension == "lzw"):
                     output_name = comp.LZW_decompress(UPLOAD_FOLDER + filename)
             else:

@@ -1,6 +1,7 @@
 import sys
 import os
 from bitarray import bitarray
+import time
 class LZSS():
     def LZSS(self,search,lookAhead):
         best_length = 0
@@ -46,6 +47,7 @@ class LZSS():
 
 
     def compress(self,input_buffer,output_buffer):
+        start_time = time.time()
         i = 0
         window_size = 4095
         look_size = 15
@@ -72,7 +74,7 @@ class LZSS():
                     offset_and_length += result[0] << 4
                     offset_and_length += result[1]
     
-                    if(result[1] > 0):
+                    if(result[1] > 1):
                         # Writes an offset length pair with a 1 bit flag
                         output_buffer.append(True)
                         output_buffer.frombytes(offset_and_length.to_bytes(2,'big'))
@@ -85,6 +87,7 @@ class LZSS():
     
                         i += 1
                 out.write(output_buffer.tobytes())
+            print((time.time() - start_time))
             return "LZSS_Compressed.lzss"
         except:
             return ""

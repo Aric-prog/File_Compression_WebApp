@@ -1,51 +1,12 @@
 from bitarray import bitarray
 import os
 import sys
-
+import time
 from io import StringIO,BytesIO
 
 class LZW():
     def __init__(self):
         self.DICT_LIMIT = 65535
-    def LZWCompress(self,inputString):
-
-        # make dictionary of key = actual things, value = decimals representing those things
-        # using dictSize as a pointer pointing to the last index of the dictionary
-        dictSize = 256
-        dictionary = {i.to_bytes(1,byteorder='big'): i for i in range(dictSize)}
-        # print(dictionary)
-
-        firstChar = bytearray(inputString[0].to_bytes(1,'big'))
-        result = []
-
-        # # print("Before compression:", len(inputString))
-
-        for i in range(len(inputString)):
-
-            # if it hasnt reached the last string yet, we keep assigning the nextcharacter
-            # which we are currently looping inside a variable
-            if i != len(inputString) - 1:
-                nextChar = (inputString[i + 1].to_bytes(1,'big'))
-
-            # if combined characters is already inserted into the dictionary,
-            # we just assign them to the first character pointer/variable
-            if bytes(firstChar + nextChar) in dictionary:
-                firstChar += nextChar
-            else:
-                # print(firstChar, dictionary[firstChar], firstChar + nextChar, dictSize)
-                # inserting the key of the dictionary of a selected index to the result list
-                result.append(dictionary[bytes(firstChar)])
-
-                # we assign a new key of a new combined character that is not in the dictionary yet
-                # with the pointer pointing to the last index + 1 and also adding more size by 1 each loop
-                # we reassign the firstChar pointer to nextChar for next iteration and reset the nextChar
-                dictionary[bytes(firstChar + nextChar)] = dictSize
-                dictSize += 1
-                firstChar = bytearray(nextChar)
-            nextChar = bytes(0)
-        result.append(dictionary[bytes(firstChar)])
-        # print(dictionary)
-        return result
 
     def LZWCompress(self,inputString):
 
@@ -167,16 +128,21 @@ class LZW():
         result = []
         result = self.LZWCompress(input_ba)
         # print(len(result))
-        with open((os.path.join("output/", "LZW_Compressed.lzw")),'wb')as w:
-            for i in result:
-                if(i < 256):
-                    output_buffer.append(True)
-                    output_buffer.frombytes(i.to_bytes(1,'big'))
-                else:
-                    try:
-                        output_buffer.append(False)
-                        output_buffer.frombytes((i).to_bytes(2,'big'))
-                    except:
-                        return ""
-            w.write(output_buffer.tobytes())
-        return 'LZW_Compressed.lzw'
+        start_time = time.time()
+        try:   
+            with open((os.path.join("output/", "LZW_Compressed.lzw")),'wb')as w:
+                for i in result:
+                    if(i < 256):
+                        output_buffer.append(True)
+                        output_buffer.frombytes(i.to_bytes(1,'big'))
+                    else:
+                        try:
+                            output_buffer.append(False)
+                            output_buffer.frombytes((i).to_bytes(2,'big'))
+                        except:
+                            return ""
+                w.write(output_buffer.tobytes())
+            print(time.time() - start_time)
+            return 'LZW_Compressed.lzw'
+        except:
+            return ''
