@@ -1,8 +1,8 @@
 import sys
 import os
 from bitarray import bitarray
-class LZ77():
-    def LZ77(self,search,lookAhead):
+class LZSS():
+    def LZSS(self,search,lookAhead):
         best_length = 0
         best_offset = 0
         best_char = lookAhead[0]
@@ -50,38 +50,44 @@ class LZ77():
         window_size = 4095
         look_size = 15
         
-        
-        with open((os.path.join("output/", "LZ77_Compressed.lz77")),'wb') as out:
-            while(i < len(input_buffer)):
-                search = input_buffer[:i]
-                lookAhead = input_buffer[i:]
-
-                offset_and_length = 0
-
-                if(len(search) > window_size):
-                    search = search[i - window_size:]
-                if(len(lookAhead) > window_size):
-                    lookAhead = lookAhead[:i + look_size]
-
-                result = self.LZ77(search,lookAhead)
-
-                offset_and_length += result[0] << 4
-                offset_and_length += result[1]
-
-                if(result[1] > 1):
-                    # offset and then length
-                    output_buffer.append(True)
-                    output_buffer.frombytes(offset_and_length.to_bytes(2,'big'))
-
-                    i += result[1]
-                else:
-                    # Write raw char because it saves more space.
-                    output_buffer.append(False)
-                    output_buffer.frombytes(result[2].to_bytes(1,'big'))
-
-                    i += 1
-            out.write(output_buffer.tobytes())
-        return "LZ77_Compressed.lz77"
+        try:
+            with open((os.path.join("output/", "LZSS_Compressed.lzss")),'wb') as out:
+                while(i < len(input_buffer)):
+                    # Splits the input bytearray into search and lookahead buffer
+                    search = input_buffer[:i]
+                    lookAhead = input_buffer[i:]
+    
+                    offset_and_length = 0
+                    
+                    # In the case that the buffer that has been created is bigger than the intended size
+                    if(len(search) > window_size):
+                        search = search[i - window_size:]
+                    if(len(lookAhead) > look_size):
+                        lookAhead = lookAhead[:i + look_size]
+    
+                    # Calls the LZSS function, returning an offset , length, literal
+                    result = self.LZSS(search,lookAhead)
+                
+                    # Inputs the offset and length into a 16 bit integer, to later be written to output buffer
+                    offset_and_length += result[0] << 4
+                    offset_and_length += result[1]
+    
+                    if(result[1] > 0):
+                        # Writes an offset length pair with a 1 bit flag
+                        output_buffer.append(True)
+                        output_buffer.frombytes(offset_and_length.to_bytes(2,'big'))
+    
+                        i += result[1]
+                    else:
+                        # Write literal because it saves more space.
+                        output_buffer.append(False)
+                        output_buffer.frombytes(result[2].to_bytes(1,'big'))
+    
+                        i += 1
+                out.write(output_buffer.tobytes())
+            return "LZSS_Compressed.lzss"
+        except:
+            return ""
 
     def decompress(self, input_buffer,extension):
         # print(pair)
@@ -90,7 +96,7 @@ class LZ77():
         length = len(input_buffer)
 
         print("DECOMPRESS\n")
-        with open((os.path.join("output/", ("LZ77_Decompressed." + extension))),'wb') as out:
+        with open((os.path.join("output/", ("LZSS_Decompressed." + extension))),'wb') as out:
             while(length >= 9):
                 # Case true :
                 if(input_buffer.pop(0)):
@@ -109,4 +115,4 @@ class LZ77():
                     output += element
                     # print(output)
             out.write(output)
-        return "LZ77_Decompressed." + extension
+        return "LZSS_Decompressed." + extension

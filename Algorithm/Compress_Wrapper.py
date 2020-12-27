@@ -1,6 +1,6 @@
 from bitarray import bitarray
 from algorithm.LZW_Final import LZW
-from algorithm.LZSS_Final import LZ77
+from algorithm.LZSS_Final import LZSS
 
 import cProfile
 import os 
@@ -31,12 +31,12 @@ def get_extension(filename):
     else:
         return "    "
 
-def LZ77_compress(filename):
-    compressor = LZ77()
+def LZSS_compress(filename):
+    compressor = LZSS()
     return compressor.compress(*write4(filename))
 
-def LZ77_decompress(filename):
-    decompressor = LZ77()
+def LZSS_decompress(filename):
+    decompressor = LZSS()
     return decompressor.decompress(*read4(filename))
     
 def LZW_compress(filename):
@@ -48,5 +48,5 @@ def LZW_decompress(filename):
     decompressor = LZW()
     return decompressor.decompress(*read4(filename))
     
-# cProfile.run("LZW_compress('test.jpg')")
+cProfile.run("LZSS_compress('index.html')") 
 # cProfile.run("LZW_decompress('LZW_Compressed.lzw')")

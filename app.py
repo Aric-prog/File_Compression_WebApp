@@ -6,7 +6,7 @@ from os.path import join
 
 UPLOAD_FOLDER = "uploads/"
 OUTPUT_FOLDER = "output/"
-SUPPORTED_EXTENSIONS = {'lz77','lzw'}
+SUPPORTED_EXTENSIONS = {'lzss','lzw'}
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -70,7 +70,7 @@ def decompress_upload():
     
             # TODO : check extension and do appropriate function
             if extension in SUPPORTED_EXTENSIONS:
-                if(extension == "lz77"):
+                if(extension == "lzss"):
                     output_name = comp.LZ77_decompress(UPLOAD_FOLDER + filename)
                 elif(extension == "lzw"):
                     output_name = comp.LZW_decompress(UPLOAD_FOLDER + filename)
