@@ -44,7 +44,7 @@ nav a:hover{
     /* border: 5px dashed #415A77;
     border-radius: 10px; */
     margin: auto;
-    height: 300px;
+    height: 120px;
     /* height: 240px; */
     width: 35%;
 }
@@ -52,7 +52,7 @@ nav a:hover{
 .fileContainerThumb{
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     overflow: hidden;
     background-color: #E0E1DD;
     background-size: cover;
@@ -80,7 +80,7 @@ nav a:hover{
     position: relative;
 }
 .fileContainer--over{
-    border-style: solid;
+    /* border-style: solid; */
 }
 .divButton{
     margin: 0 auto;
@@ -251,6 +251,6 @@ input[type='file']{
     }
 
     .fileContainer--over{
-        border-style: solid;
+        /* border-style: solid; */
     }
 }
