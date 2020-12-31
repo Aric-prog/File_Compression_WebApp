@@ -21,7 +21,7 @@
         <form action="/decompress" id="uploadFileForm" method="POST" enctype=multipart/form-data>
             <div>
                 <div class="files">
-                    <span class="dragFile">Drag a compressed file here</span>
+                    <span class="dragFile">Upload a file here</span>
                     <p class="pickFileText">or pick one</p>
                     <div class="divButton">
                         <div class="uploadButton">
@@ -29,6 +29,8 @@
                             <label for="file">+</label>
                         </div>
                     </div>
+                    
+                <span style="padding-top: 20px;" id = "filename"></span>
                 </div>
             </div>
             <div class="beforeUpload" id="beforeUpload">
@@ -50,5 +52,22 @@
         </form>
     </main>
 </body>
+
+<script>
+    console.log("start")
+    var input = document.getElementById('file');
+    var infoArea = document.getElementById( 'filename' );
+
+    input.addEventListener( 'change', (event) => {
+        console.log("here?")
+        var input = event.srcElement;
+    
+        // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+        var fileName = input.files[0].name;
+        
+        // use fileName however fits your app best, i.e. add it into a div
+        infoArea.innerHTML = 'File name: ' + fileName;
+    });
+</script>
 
 </html>
