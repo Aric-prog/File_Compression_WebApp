@@ -24,15 +24,15 @@
         <br><br>
         <div class="fileContainer">
             <div class="files">
-                <span class="dragFile">Drag a file here</span>
-                <p class="pickFileText">or pick one</p>
+                <p class="pickFileText">Upload a file</p>
                 <div class="divButton">
                     <div class="uploadButton">
                         <input type=file name=file id="file" class="fileButton">
-                        <label for="file">+</label>
+                        <label for="file" id="plusButton">+</label>
                     </div>
                 </div>
             </div>
+            <span style="padding-top:10px" id = "filename"></span>
         </div>
 
         </div>
@@ -59,7 +59,22 @@
         {% endif %}
     </form>
 
-    <script src="../static/AOAJs.js"></script>
+    <script>
+        console.log("start")
+        var input = document.getElementById('file');
+        var infoArea = document.getElementById( 'filename' );
+
+        input.addEventListener( 'change', (event) => {
+            console.log("here?")
+            var input = event.srcElement;
+        
+            // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+            var fileName = input.files[0].name;
+            
+            // use fileName however fits your app best, i.e. add it into a div
+            infoArea.innerHTML = 'File name: ' + fileName;
+        });
+    </script>
 
 </body>
 

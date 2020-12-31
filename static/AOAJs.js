@@ -77,3 +77,30 @@
 //     before.style.display = "none";
 //     after.style.display = "block";
 // }
+
+
+// function displayFileName(){
+// $('#plusButton').change(function(e){
+//     var filename = e.target.files[0].name;
+//     window.alert(filename)
+//     document.getElementById("filename").innerHTML = filename;
+// });
+// }
+
+var input = document.getElementById( 'plusButton' );
+var infoArea = document.getElementById( 'filename' );
+
+input.addEventListener( 'change', showFileName );
+
+function showFileName( event ) {
+  
+  // the change event gives us the input it occurred in 
+  var input = event.srcElement;
+  
+  // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+  var fileName = input.files[0].name;
+  
+  console.log(fileName);
+  // use fileName however fits your app best, i.e. add it into a div
+  infoArea.innerHTML = 'File name: ' + fileName;
+}
