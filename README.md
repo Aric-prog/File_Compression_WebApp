@@ -1,4 +1,4 @@
-"## File_Compression_WebApp" 
+##File_Compression_WebApp
 
 This is our Final Project for our 3rd Semester Analysis of Algorithms course. 
 
